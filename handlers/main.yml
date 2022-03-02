@@ -1,0 +1,5 @@
+---
+- name: restart apache
+  ansible.builtin.service:
+    name: "{{ apache_const[ansible_os_family]['service_name'] }}"
+    state: restarted

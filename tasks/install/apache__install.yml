@@ -1,0 +1,12 @@
+---
+- name: install apache dependencies
+  ansible.builtin.package:
+    name: "{{ apache_install['dependencies'][ansible_os_family] }}"
+    state: present
+    update_cache: true
+
+- name: install apache packages
+  ansible.builtin.package:
+    name: "{{ apache_install['packages'][ansible_os_family] }}"
+    state: present
+    update_cache: true
