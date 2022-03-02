@@ -9,7 +9,6 @@
   notify: restart apache
   when: apache_virtualhost[item.key]['state'] == "absent"
 
-
 - name: copy config template to remote node
   ansible.builtin.template:
     src: "{{ apache_virtualhost[item.key]['src'] }}"

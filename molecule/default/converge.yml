@@ -10,7 +10,7 @@
   
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄                Apache 
+    # ┌┄┄┄┄┄┄┄┄                Apache
       apache:
         enabled: true
     # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄         install apache
@@ -28,7 +28,7 @@
           state: "absent"
       # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄         add new virtual_host
         new_conf:
-          enabled: true    
+          enabled: true
           file: "new.conf"
           state: "present"
           src: "apache__virtualhost.j2"
@@ -42,8 +42,6 @@
             ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
             CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
             SSLEngine: ""
-            SSLCertificateFile:	""
-            SSLCertificateKeyFile: ""
   
   tasks:
   - name: role darexsu.apache
