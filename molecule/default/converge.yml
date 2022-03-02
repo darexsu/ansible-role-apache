@@ -10,7 +10,7 @@
   
   vars:
     merge:
-# apache ┄┄┄┄┄┄┄┄┄┄┄┄┄
+    # ┌┄┄┄┄┄┄┄┄                Apache 
       apache:
         enabled: true
     # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄         install apache
