@@ -51,20 +51,20 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 # Apache ┄┄┄┄┄┄┄┄┄┄┄┄
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          install apache
+    # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          install apache
       apache_install:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          configure apache.conf
+    # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          configure apache.conf
       apache_conf:
         enabled: true
         backup: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          virtual_host section
+    # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          virtual_host section
       apache_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄        delete default virtual_host
+      # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄        delete default virtual_host
         default_conf:
           enabled: true
           state: "absent"
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄        add new virtual_host
+      # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄        add new virtual_host
         new_conf:
           enabled: true    
           file: "new.conf"
@@ -100,7 +100,7 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 # Apache ┄┄┄┄┄┄┄┄┄┄┄┄
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          install apache
+    # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          install apache
       apache_install:
         enabled: true
 
@@ -121,7 +121,7 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 # Apache ┄┄┄┄┄┄┄┄┄┄┄┄
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          configure apache.conf
+    # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          configure apache.conf
       apache_conf:
         enabled: true
         backup: true
@@ -144,13 +144,13 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 # Apache ┄┄┄┄┄┄┄┄┄┄┄┄
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          virtual_host section
+    # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          virtual_host section
       apache_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          delete default virtual_host
+      # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          delete default virtual_host
         default_conf:
           enabled: true
           state: "absent"
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          add new virtual_host
+      # ┏┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          add new virtual_host
         new_conf:
           enabled: true    
           file: "new.conf"
