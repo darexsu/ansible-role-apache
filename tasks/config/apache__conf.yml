@@ -2,7 +2,7 @@
 - name: copy conf template to remote node
   ansible.builtin.template:
     src: "{{ apache_conf.src }}"
-    dest: "{{ apache_const[ansible_os_family]['conf_file'] }}{{ apache_conf.file }}"
+    dest: "{{ apache_const[ansible_os_family]['conf_path'] }}{{ apache_conf.file }}"
     owner: root
     group: root
     mode: 0644

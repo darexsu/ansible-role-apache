@@ -19,7 +19,7 @@ apache:
 apache_install:
   enabled: false
   packages:
-    Debian: [apache]
+    Debian: [apache2]
     RedHat: [httpd]
   dependencies:
     Debian: []
@@ -56,7 +56,7 @@ apache_virtualhost:
 apache_const:
   Debian:
     service_name: "apache2"
-    conf_file: "apache.conf"
+    conf_file: "apache2.conf"
     conf_path: "/etc/apache2/"
     conf_src: "apache__conf_Debian.j2"
     virtualhost_path: "/etc/apache2/sites-available/"
