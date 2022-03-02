@@ -49,7 +49,7 @@ apache_virtualhost:
       ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
       CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
       SSLEngine: ""
-      SSLCertificateFile:	""
+      SSLCertificateFile: ""
       SSLCertificateKeyFile: ""
 
 # ------ CONSTANTS --------
