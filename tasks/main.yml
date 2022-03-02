@@ -33,8 +33,12 @@
   when: apache_virtualhost[item.key]['enabled']
   with_dict: "{{ apache_virtualhost }}"
 
-- name: ensure apache is started
+- name: service facts
+  ansible.builtin.service_facts:
+
+- name: ensure apache is "{{ apache.service.state }}"
   ansible.builtin.service:
     name: "{{ apache_const[ansible_os_family]['service_name'] }}"
     state: "{{ apache.service.state }}"
     enabled: "{{ apache.service.enabled }}"
+  when: ansible_facts.services is search(apache_const[ansible_os_family]['service_name'])
