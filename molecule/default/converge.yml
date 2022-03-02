@@ -1,7 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  become: true
  
   pre_tasks:
     - name: Unnessessary command
@@ -11,23 +10,23 @@
   
   vars:
     merge:
-# apache ──────────
+# apache ┄┄┄┄┄┄┄┄┄┄┄┄┄
       apache:
         enabled: true
-  # ┌───────────────          install apache
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄         install apache
       apache_install:
         enabled: true
-  # ┌───────────────          configure apache.conf
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄         configure apache.conf
       apache_conf:
         enabled: true
         backup: true
-  # ┌───────────────          virtual_host section
+    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄         virtual_host section
       apache_virtualhost:
-    # ┌───────────────        delete default virtual_host
+      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄         delete default virtual_host
         default_conf:
           enabled: true
           state: "absent"
-    # ┌───────────────        add new virtual_host
+      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄         add new virtual_host
         new_conf:
           enabled: true    
           file: "new.conf"
