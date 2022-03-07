@@ -1,11 +1,11 @@
 ---
 - name: merge dictionaries
   block:
-  - include_vars: 
-      file: ../../darexsu.apache/defaults/main.yml  
+  - include_vars:
+      file: ../../darexsu.apache/defaults/main.yml
       name: apache_default_vars
-  
-  - name: merge default and new dictionaries 
+
+  - name: merge default and new dictionaries
     set_fact:
       "{{ item.key }}": "{{ apache_default_vars[item.key] | combine(merge[item.key], recursive=True)}}"
     when: apache_default_vars[item.key] is defined

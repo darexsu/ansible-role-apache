@@ -1,11 +1,11 @@
 ---
-- debug: 
+- debug:
     msg: "edit {{ apache_virtualhost[item.key]['file'] }}"
 
 - name: remove virtualhost config
   ansible.builtin.file:
     path: "{{ apache_const[ansible_os_family]['virtualhost_path'] }}{{ apache_virtualhost[item.key]['file'] }}"
-    state: absent  
+    state: absent
   notify: restart apache
   when: apache_virtualhost[item.key]['state'] == "absent"
 

@@ -4,7 +4,7 @@ on:
   push:
   schedule:
     - cron: "0 6 * * 3"
-    
+
 defaults:
   run:
     working-directory: 'darexsu.apache'
@@ -22,7 +22,7 @@ jobs:
           - ubuntu-2004
           - rockylinux-8
           - oraclelinux-8
-          
+
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2

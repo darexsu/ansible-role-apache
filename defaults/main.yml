@@ -1,5 +1,5 @@
 ---
-# apache
+# Apache
 #  ├── install
 #  |    ├── packages
 #  |    ├── dependencies
@@ -8,14 +8,14 @@
 #       ├── apache.conf
 #       └── virtualhost.conf
 
-# apache
+# Apache
 apache:
-  enabled: false  
+  enabled: false
   service:
     enabled: true
     state: "started"
 
-# apache -> install
+# Apache -> install
 apache_install:
   enabled: false
   packages:
@@ -25,20 +25,20 @@ apache_install:
     Debian: []
     RedHat: []
 
-# apache -> config -> apache.conf
+# Apache -> config -> apache.conf
 apache_conf:
   enabled: false
   file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
   src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
   backup: false
 
-# apache -> config -> {virtualhost}.conf
+# Apache -> config -> {virtualhost}.conf
 apache_virtualhost:
   default_conf:
-    enabled: false    
+    enabled: false
     file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
     state: "present"
-    src: "apache__virtualhost.j2"   
+    src: "apache__virtualhost.j2"
     backup: false
     vars:
       ip: "*"
@@ -52,7 +52,7 @@ apache_virtualhost:
       SSLCertificateFile: ""
       SSLCertificateKeyFile: ""
 
-# ------ CONSTANTS --------
+# Apache -> constants
 apache_const:
   Debian:
     service_name: "apache2"

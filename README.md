@@ -1,10 +1,14 @@
 # Ansible role apache
 [![CI Molecule](https://github.com/darexsu/ansible-role-apache/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-apache/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/58260?color=blue&label=downloads)
 
-|  Testing         |  Debian            |  Ubuntu         |  Rocky Linux  | Oracle Linux |
-| :--------------: | :----------------: | :-------------: | :-----------: | :----------: |
-| Distro version   |  10, 11            | 18.04, 20.04    |  8            | 8            |
-| apache version  |  2.4.x+            |    2.4.x+       |  2.4.x+       | 2.4.x+       |
+|  Testing         |  Official repo     |
+| :--------------: | :----------------: |
+| Debian 11        |  apache  2.4       |
+| Debian 10        |  apache  2.4       |
+| Ubuntu 20.04     |  apache  2.4       |
+| Ubuntu 18.04     |  apache  2.4       |
+| Oracle Linux 8   |  apache  2.4       |
+| Rocky Linux 8    |  apache  2.4       |
 
 ### 1) Install role from Galaxy
 ```
@@ -20,10 +24,9 @@ ansible-galaxy install darexsu.apache --force
       - [apache.conf](#apacheconf)
       - [delete defaults and add new virtualhost.conf](#delete-defaults-and-add-new-virtualhostconf)
 
-Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
+Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
 # Replace             # Merge
-[host_vars]           [host_vars]
 ---                   ---
   vars:                 vars:
     dict:                 merge:
@@ -31,8 +34,8 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
       b: "value"              a: "value" 
                               b: "value"
 
-# Role recursive merge:
-[host_vars]     [current role]    [include_role]
+# How does merge work?
+Your vars [host_vars]  -->  default vars [current role] --> default vars [include role]
   
   dict:          dict:              dict:
     a: "1" -->     a: "1"    -->      a: "1"
@@ -48,23 +51,23 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄                 Apache 
+      # Apache
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          install apache
+      # Apache -> install
       apache_install:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          configure apache.conf
+      # Apache -> config
       apache_conf:
         enabled: true
         backup: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          virtual_host section
+      # Apache -> config -> virtualhost
       apache_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄          delete default virtual_host
+      # Apache -> config -> virtualhost -> delete default virtual_host
         default_conf:
           enabled: true
           state: "absent"
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄           add new virtual_host
+      # Apache -> config -> virtualhost -> add new virtual_host
         new_conf:
           enabled: true    
           file: "new.conf"
@@ -97,10 +100,10 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄               Apache 
+      # Apache
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄         install apache
+      # Apache -> install
       apache_install:
         enabled: true
 
@@ -118,10 +121,10 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄               Apache 
+      # Apache
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄         configure apache.conf
+      # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
         backup: true
@@ -141,16 +144,16 @@ Role behaviour: Replace or Merge (with "hash_behaviour=replace" in ansible.cfg):
 
   vars:
     merge:
-    # ┌┄┄┄┄┄┄┄┄                 Apache 
+      # Apache
       apache:
         enabled: true
-    # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄          virtual_host section
+      # Apache -> config -> virtualhost
       apache_virtualhost:
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄          delete default virtual_host
+      # Apache -> config -> virtualhost -> delete default virtual_host
         default_conf:
           enabled: true
           state: "absent"
-      # ┌┄┄┄┄┄┄┄┄┄┄┄┄┄          add new virtual_host
+      # Apache -> config -> virtualhost -> add new virtual_host
         new_conf:
           enabled: true    
           file: "new.conf"
