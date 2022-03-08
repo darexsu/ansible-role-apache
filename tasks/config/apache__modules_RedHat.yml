@@ -1,16 +1,16 @@
 ---
 - name: off modules
   ansible.builtin.replace:
-    path: "{{ apache_const[ansible_os_family]['mods_available_path'] }}00-base.conf"
-    regexp: '(.*{{ item }}.*)'
+    path: "{{ apache_const[ansible_os_family]['mods_available_path'] }}{{ item[0] }}"
+    regexp: '(.*{{ item[1] }}.*)'
     replace: '#\1'
-  with_items: "{{ apache_modules['mods_disabled'] }}"
+  loop: "{{ apache_const[ansible_os_family]['mods_file'] | product(apache_modules['mods_disabled']) | list }}"
   notify: restart apache
 
 - name: on modules
   ansible.builtin.replace:
-    path: "{{ apache_const[ansible_os_family]['mods_available_path'] }}00-base.conf"
-    regexp: '^#(.*{{ item }}.*)'
+    path: "{{ apache_const[ansible_os_family]['mods_available_path'] }}{{ item[0] }}"
+    regexp: '^#(.*{{ item[1] }}.*)'
     replace: '\1'
-  with_items: "{{ apache_modules['mods_enabled'] }}"
+  loop: "{{ apache_const[ansible_os_family]['mods_file'] | product(apache_modules['mods_enabled']) | list }}"
   notify: restart apache
