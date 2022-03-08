@@ -34,7 +34,7 @@ apache_conf:
 
 # Apache -> config -> modules
 apache_modules:
-  enabled: true
+  enabled: false
   mods_enabled: []
   mods_disabled: []
 
