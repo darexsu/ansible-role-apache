@@ -1,6 +1,7 @@
 ---
 - name: Converge
   hosts: all
+  become: true
 
   pre_tasks:
     - name: Unnessessary command
@@ -20,6 +21,11 @@
       apache_conf:
         enabled: true
         backup: true
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: true
+        mods_enabled: [rewrite]
+        mods_disabled: []
       # Apache -> config -> {virtualhost}.conf
       apache_virtualhost:
       # Apache -> config -> delete default virtual_host

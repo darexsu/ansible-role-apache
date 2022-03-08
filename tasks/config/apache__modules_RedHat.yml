@@ -1,0 +1,16 @@
+---
+- name: off modules
+  ansible.builtin.replace:
+    path: "{{ apache_const[ansible_os_family]['mods_available_path'] }}00-base.conf"
+    regexp: '(.*{{ item }}.*)'
+    replace: '#\1'
+  with_items: "{{ apache_modules['mods_disabled'] }}"
+  notify: restart apache
+
+- name: on modules
+  ansible.builtin.replace:
+    path: "{{ apache_const[ansible_os_family]['mods_available_path'] }}00-base.conf"
+    regexp: '^#(.*{{ item }}.*)'
+    replace: '\1'
+  with_items: "{{ apache_modules['mods_enabled'] }}"
+  notify: restart apache

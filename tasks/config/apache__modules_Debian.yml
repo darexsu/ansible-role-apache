@@ -1,0 +1,17 @@
+---
+- name: off modules
+  ansible.builtin.file:
+    path: "{{ apache_const[ansible_os_family]['mods_enabled_path'] }}/{{ item }}.load"
+    state: absent
+  with_items: "{{ apache_modules['mods_disabled'] }}"
+  notify: restart apache
+
+- name: on modules
+  ansible.builtin.file:
+    dest: "{{ apache_const[ansible_os_family]['mods_enabled_path'] }}/{{ item }}.load"
+    src: "{{ apache_const[ansible_os_family]['mods_available_path'] }}/{{ item }}.load"
+    owner: root
+    group: root
+    state: link
+  with_items: "{{ apache_modules['mods_enabled'] }}"
+  notify: restart apache

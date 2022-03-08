@@ -23,6 +23,7 @@ ansible-galaxy install darexsu.apache --force
     - config
       - [apache.conf](#apacheconf)
       - [delete defaults and add new virtualhost.conf](#delete-defaults-and-add-new-virtualhostconf)
+      - [enable/disable modules](#enable-disable-modules)
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
@@ -171,6 +172,28 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             SSLEngine: ""
             SSLCertificateFile: ""
             SSLCertificateKeyFile: ""
+              
+  tasks:
+  - name: role darexsu.apache
+    include_role: 
+      name: darexsu.apache
+```
+##### enable disable modules
+```yaml
+---
+- hosts: all
+  become: true
+
+  vars:
+    merge:
+      # Apache
+      apache:
+        enabled: true
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: true
+        mods_enabled: [rewrite]
+        mods_disabled: []
               
   tasks:
   - name: role darexsu.apache
