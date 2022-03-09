@@ -1,0 +1,38 @@
+---
+- debug:
+    msg: "edit {{ apache_virtualhost[item.key]['file'] }}"
+
+- name: remove virtualhost config
+  ansible.builtin.file:
+    path: "{{ apache_const[ansible_os_family]['virtualhost_path'] }}{{ apache_virtualhost[item.key]['file'] }}"
+    state: absent
+  notify: restart apache
+  when: apache_virtualhost[item.key]['state'] == "absent"
+
+- name: copy config template to remote node
+  ansible.builtin.template:
+    src: "{{ apache_virtualhost[item.key]['src'] }}"
+    dest: "{{ apache_const[ansible_os_family]['virtualhost_path'] }}{{ apache_virtualhost[item.key]['file'] }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: "{{ apache_virtualhost[item.key]['backup'] }}"
+  notify: restart apache
+  when: apache_virtualhost[item.key]['state'] == "present"
+
+- name: delete link in site-enabled
+  ansible.builtin.file:
+    path: "{{ apache_const[ansible_os_family]['virtualhost_path_enabled'] }}{{ apache_virtualhost[item.key]['file'] }}"
+    state: absent
+  notify: restart apache
+  when: apache_virtualhost[item.key]['state'] == "absent"
+
+- name: create link in site-enabled
+  ansible.builtin.file:
+    dest: "{{ apache_const[ansible_os_family]['virtualhost_path_enabled'] }}{{ apache_virtualhost[item.key]['file'] }}"
+    src: "{{ apache_const[ansible_os_family]['virtualhost_path'] }}{{ apache_virtualhost[item.key]['file'] }}"
+    owner: root
+    group: root
+    state: link
+  notify: restart apache
+  when: apache_virtualhost[item.key]['state'] == "present"

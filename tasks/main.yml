@@ -29,7 +29,7 @@
   when: apache_conf.enabled
 
 - name: include apache virtualhost config
-  include_tasks: ./tasks/config/apache__virtualhost.yml
+  include_tasks: ./tasks/config/apache__virtualhost_{{ ansible_os_family }}.yml
   when: apache_virtualhost[item.key]['enabled']
   with_dict: "{{ apache_virtualhost }}"
 
