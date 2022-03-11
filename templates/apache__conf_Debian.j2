@@ -15,8 +15,8 @@ MaxKeepAliveRequests 100
 KeepAliveTimeout 5
 
 
-User ${APACHE_RUN_USER}
-Group ${APACHE_RUN_GROUP}
+User {{ apache_conf['vars']['apache_user'] }}
+Group {{ apache_conf['vars']['apache_group'] }}
 
 
 HostnameLookups Off

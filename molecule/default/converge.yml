@@ -20,7 +20,7 @@
       # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
-        backup: true
+        backup: false
       # Apache -> config -> modules
       apache_modules:
         enabled: true

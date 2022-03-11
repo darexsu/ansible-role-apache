@@ -31,6 +31,9 @@ apache_conf:
   file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
   src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
   backup: false
+  vars:
+    apache_user: "www-data"
+    apache_group: "www-data"
 
 # Apache -> config -> modules
 apache_modules:

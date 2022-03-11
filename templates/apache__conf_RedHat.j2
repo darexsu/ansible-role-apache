@@ -5,8 +5,8 @@ Listen 80
 
 Include conf.modules.d/*.conf
 
-User apache
-Group apache
+User {{ apache_conf['vars']['apache_user'] }}
+Group {{ apache_conf['vars']['apache_group'] }}
 
 ServerAdmin root@localhost
 
