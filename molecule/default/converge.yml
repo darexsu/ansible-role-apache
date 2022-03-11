@@ -8,6 +8,7 @@
       ansible.builtin.shell:
         cmd: "{{ lookup('env', 'ANSIBLE_COMMAND') }}"
       when: lookup('env', 'ANSIBLE_COMMAND') | length > 0
+      become: false
 
   vars:
     merge:
