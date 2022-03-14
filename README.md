@@ -1,5 +1,24 @@
-# Ansible role apache
+# Ansible role Apache
 [![CI Molecule](https://github.com/darexsu/ansible-role-apache/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-apache/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/58260?color=blue&label=downloads)
+
+  - Role:
+      - [platforms](#platforms)
+      - [install](#install)
+      - [behaviour](#behaviour)
+  - Playbooks (short version):
+      - [install and configure: Apache](#install-and-configure-apache-short-version)
+          - [install: Apache from official repo](#install-apache-from-official-repo-short-version)
+          - [configure: apache.conf](#configure-apacheconf-short-version)
+          - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-short-version)
+          - [configure: enable/disable mods ](#configure-enabledisable-mods-short-version)
+  - Playbooks (full version):
+      - [install and configure: Apache](#install-and-configure-apache-short-version)
+          - [install: Apache from official repo](#install-apache-from-official-repo-short-version)
+          - [configure: apache.conf](#configure-apacheconf-short-version)
+          - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-short-version)
+          - [configure: enable/disable mods ](#configure-enabledisable-mods-short-version)
+
+### Platforms
 
 |  Testing         |  Official repo     |
 | :--------------: | :----------------: |
@@ -10,20 +29,12 @@
 | Oracle Linux 8   |  apache  2.4       |
 | Rocky Linux 8    |  apache  2.4       |
 
-### 1) Install role from Galaxy
+### Install
 ```
 ansible-galaxy install darexsu.apache --force
 ```
 
-### 2) Example playbooks:
-  
-  - [full playbook](#full-playbook)  
-    - install
-      - [official repo](#install-from-official-repo)
-    - config
-      - [apache.conf](#apacheconf)
-      - [delete defaults and add new virtualhost.conf](#delete-defaults-and-add-new-virtualhostconf)
-      - [enable/disable modules](#enable-disable-modules)
+### Behaviour
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
@@ -44,7 +55,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
                                       c: "3"
     
 ```
-##### Full playbook
+##### Install and configure: Apache (short version)
 ```yaml
 ---
 - hosts: all
@@ -58,23 +69,22 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Apache -> install
       apache_install:
         enabled: true
-      # Apache -> config
+      # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
-        backup: true
-      # Apache -> config -> virtualhost
+        vars:
+          apache_user: "www-data"
+          apache_group: "www-data"
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: true
+        mods_enabled: [rewrite]
+        mods_disabled: []
+      # Apache -> config -> {virtualhost}.conf
       apache_virtualhost:
-      # Apache -> config -> virtualhost -> delete default virtual_host
         default_conf:
           enabled: true
-          state: "absent"
-      # Apache -> config -> virtualhost -> add new virtual_host
-        new_conf:
-          enabled: true    
-          file: "new.conf"
           state: "present"
-          src: "apache__virtualhost.j2"
-          backup: false
           vars:
             ip: "*"
             port: "80"
@@ -83,17 +93,14 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             DocumentRoot: "/var/www/html"
             ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
             CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
-            SSLEngine: ""
-            SSLCertificateFile: ""
-            SSLCertificateKeyFile: ""
   
   tasks:
-  - name: role darexsu.apache
-    include_role: 
-      name: darexsu.apache
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
     
 ```
-##### install from official repo
+##### Install: Apache from official repo (short version)
 ```yaml
 ---
 - hosts: all
@@ -109,12 +116,12 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
 
   tasks:
-  - name: role darexsu.apache
-    include_role: 
-      name: darexsu.apache
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
 
 ```
-##### apache.conf
+##### Configure: apache.conf (short version)
 ```yaml
 ---
 - hosts: all
@@ -128,16 +135,20 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
-        backup: true
-
+        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+        backup: false
+        vars:
+          apache_user: "www-data"
+          apache_group: "www-data"
   
   tasks:
-  - name: role darexsu.apache
-    include_role: 
-      name: darexsu.apache
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
 
 ```
-##### delete defaults and add new virtualhost.conf
+##### Configure: delete default vhost.conf and add new vhost.conf (short version)
 ```yaml
 ---
 - hosts: all
@@ -148,15 +159,24 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Apache
       apache:
         enabled: true
-      # Apache -> config -> virtualhost
+      # Apache -> config -> {virtualhost}.conf
       apache_virtualhost:
-      # Apache -> config -> virtualhost -> delete default virtual_host
         default_conf:
           enabled: true
+          file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
           state: "absent"
-      # Apache -> config -> virtualhost -> add new virtual_host
+          src: "apache__virtualhost.j2"
+          backup: false
+          vars:
+            ip: "*"
+            port: "80"
+            ServerName: "www.example1.com"
+            ServerAdmin: "webmaster@localhost"
+            DocumentRoot: "/var/www/html"
+            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
         new_conf:
-          enabled: true    
+          enabled: true
           file: "new.conf"
           state: "present"
           src: "apache__virtualhost.j2"
@@ -164,21 +184,18 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           vars:
             ip: "*"
             port: "80"
-            ServerName: "www.example.com"
+            ServerName: "www.example2.com"
             ServerAdmin: "webmaster@localhost"
             DocumentRoot: "/var/www/html"
             ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
             CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
-            SSLEngine: ""
-            SSLCertificateFile: ""
-            SSLCertificateKeyFile: ""
               
   tasks:
-  - name: role darexsu.apache
-    include_role: 
-      name: darexsu.apache
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
 ```
-##### enable disable modules
+##### Configure enable/disable mods (short version)
 ```yaml
 ---
 - hosts: all
@@ -196,7 +213,212 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         mods_disabled: []
               
   tasks:
-  - name: role darexsu.apache
-    include_role: 
-      name: darexsu.apache
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
+```
+##### Install and configure: Apache (full version)
+```yaml
+---
+- hosts: all
+  become: true
+
+  vars:
+    merge:
+      # Apache
+      apache:
+        enabled: true
+        service:
+          enabled: true
+          state: "started"
+      # Apache -> install
+      apache_install:
+        enabled: true
+        packages:
+          Debian: [apache2]
+          RedHat: [httpd]
+        dependencies:
+          Debian: []
+          RedHat: []
+      # Apache -> config -> apache.conf
+      apache_conf:
+        enabled: true
+        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+        backup: false
+        vars:
+          apache_user: "www-data"
+          apache_group: "www-data"
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: true
+        mods_enabled: [rewrite]
+        mods_disabled: []
+      # Apache -> config -> {virtualhost}.conf
+      apache_virtualhost:
+        default_conf:
+          enabled: true
+          file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
+          state: "present"
+          src: "apache__virtualhost.j2"
+          backup: false
+          vars:
+            ip: "*"
+            port: "80"
+            ServerName: "www.example.com"
+            ServerAdmin: "webmaster@localhost"
+            DocumentRoot: "/var/www/html"
+            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
+            SSLEngine: ""
+            SSLCertificateFile: ""
+            SSLCertificateKeyFile: ""
+  
+  tasks:
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
+    
+```
+##### Install: Apache from official repo (full version)
+```yaml
+---
+- hosts: all
+  become: true
+
+  vars:
+    merge:
+      # Apache
+      apache:
+        enabled: true
+        service:
+          enabled: true
+          state: "started"
+      # Apache -> install
+      apache_install:
+        enabled: true
+        packages:
+          Debian: [apache2]
+          RedHat: [httpd]
+        dependencies:
+          Debian: []
+          RedHat: []
+
+  tasks:
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
+
+```
+##### Configure: apache.conf (full version)
+```yaml
+---
+- hosts: all
+  become: true
+
+  vars:
+    merge:
+      # Apache
+      apache:
+        enabled: true
+        service:
+          enabled: true
+          state: "started"
+      # Apache -> config -> apache.conf
+      apache_conf:
+        enabled: true
+        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+        backup: false
+        vars:
+          apache_user: "www-data"
+          apache_group: "www-data"
+  
+  tasks:
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
+
+```
+##### Configure: delete default vhost.conf and add new vhost.conf (full version)
+```yaml
+---
+- hosts: all
+  become: true
+
+  vars:
+    merge:
+      # Apache
+      apache:
+        enabled: true
+        service:
+          enabled: true
+          state: "started"
+      # Apache -> config -> {virtualhost}.conf
+      apache_virtualhost:
+        default_conf:
+          enabled: true
+          file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
+          state: "absent"
+          src: "apache__virtualhost.j2"
+          backup: false
+          vars:
+            ip: "*"
+            port: "80"
+            ServerName: "www.example1.com"
+            ServerAdmin: "webmaster@localhost"
+            DocumentRoot: "/var/www/html"
+            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
+            SSLEngine: ""
+            SSLCertificateFile: ""
+            SSLCertificateKeyFile: ""
+      # Apache -> config -> new.conf
+        new_conf:
+          enabled: true
+          file: "new.conf"
+          state: "present"
+          src: "apache__virtualhost.j2"
+          backup: false
+          vars:
+            ip: "*"
+            port: "80"
+            ServerName: "www.example2.com"
+            ServerAdmin: "webmaster@localhost"
+            DocumentRoot: "/var/www/html"
+            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
+            SSLEngine: ""
+            SSLCertificateFile: ""
+            SSLCertificateKeyFile: ""
+              
+  tasks:
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
+```
+##### Configure enable/disable mods (full version)
+```yaml
+---
+- hosts: all
+  become: true
+
+  vars:
+    merge:
+      # Apache
+      apache:
+        enabled: true
+        service:
+          enabled: true
+          state: "started"
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: true
+        mods_enabled: [rewrite]
+        mods_disabled: []
+              
+  tasks:
+    - name: role darexsu.apache
+      include_role: 
+        name: darexsu.apache
 ```
