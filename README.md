@@ -12,11 +12,11 @@
           - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-short-version)
           - [configure: enable/disable mods ](#configure-enabledisable-mods-short-version)
   - Playbooks (full version):
-      - [install and configure: Apache](#install-and-configure-apache-short-version)
-          - [install: Apache from official repo](#install-apache-from-official-repo-short-version)
-          - [configure: apache.conf](#configure-apacheconf-short-version)
-          - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-short-version)
-          - [configure: enable/disable mods ](#configure-enabledisable-mods-short-version)
+      - [install and configure: Apache](#install-and-configure-apache-full-version)
+          - [install: Apache from official repo](#install-apache-from-official-repo-full-version)
+          - [configure: apache.conf](#configure-apacheconf-full-version)
+          - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-full-version)
+          - [configure: enable/disable mods ](#configure-enabledisable-mods-full-version)
 
 ### Platforms
 
