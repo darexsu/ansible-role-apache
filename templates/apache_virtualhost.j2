@@ -1,0 +1,26 @@
+<VirtualHost {{ apache_virtualhost[item.key]["data"]["ip"] | default() }}:{{ apache_virtualhost[item.key]["data"]["port"] | default()}} >
+	{% if apache_virtualhost[item.key]["data"]["ServerName"] is defined %}
+	ServerName {{ apache_virtualhost[item.key]["data"]["ServerName"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["ServerAdmin"] is defined %}
+	ServerAdmin {{ apache_virtualhost[item.key]["data"]["ServerAdmin"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["DocumentRoot"] is defined %}
+	DocumentRoot {{ apache_virtualhost[item.key]["data"]["DocumentRoot"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["ErrorLog"] is defined %}
+	ErrorLog {{ apache_virtualhost[item.key]["data"]["ErrorLog"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["CustomLog"] is defined %}
+	CustomLog {{ apache_virtualhost[item.key]["data"]["CustomLog"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["SSLEngine"] is defined and apache_virtualhost[item.key]["data"]["SSLEngine"] -%}
+	SSLEngine {{ apache_virtualhost[item.key]["data"]["SSLEngine"] }}
+	{% endif -%}
+	{% if apache_virtualhost[item.key]["data"]["SSLEngine"] is defined and apache_virtualhost[item.key]["data"]["SSLEngine"] -%}
+	SSLCertificateFile	{{ apache_virtualhost[item.key]["data"]["SSLCertificateFile"] }}
+	{% endif -%}
+	{% if apache_virtualhost[item.key]["data"]["SSLEngine"] is defined and apache_virtualhost[item.key]["data"]["SSLEngine"] -%}
+	SSLCertificateKeyFile {{ apache_virtualhost[item.key]["data"]["SSLCertificateKeyFile"] }}
+	{% endif -%}
+</VirtualHost>

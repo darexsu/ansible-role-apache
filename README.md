@@ -4,13 +4,13 @@
   - Role:
       - [platforms](#platforms)
       - [install](#install)
-      - [behaviour](#behaviour)
-  - Playbooks (short version):
-      - [install and configure: Apache](#install-and-configure-apache-short-version)
-          - [install: Apache from official repo](#install-apache-from-official-repo-short-version)
-          - [configure: apache.conf](#configure-apacheconf-short-version)
-          - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-short-version)
-          - [configure: enable/disable mods ](#configure-enabledisable-mods-short-version)
+      - [Merge behaviour](#merge-behaviour)
+  - Playbooks (merge version):
+      - [install and configure: Apache](#install-and-configure-apache-merge-version)
+          - [install: Apache from official repo](#install-apache-from-official-repo-merge-version)
+          - [configure: apache.conf](#configure-apacheconf-merge-version)
+          - [configure: delete default vhost.conf and add new vhost.conf](#configure-delete-default-vhostconf-and-add-new-vhostconf-merge-version)
+          - [configure: enable/disable mods ](#configure-enabledisable-mods-merge-version)
   - Playbooks (full version):
       - [install and configure: Apache](#install-and-configure-apache-full-version)
           - [install: Apache from official repo](#install-apache-from-official-repo-full-version)
@@ -34,7 +34,7 @@
 ansible-galaxy install darexsu.apache --force
 ```
 
-### Behaviour
+### Merge behaviour
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
@@ -55,7 +55,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
                                       c: "3"
     
 ```
-##### Install and configure: Apache (short version)
+##### Install and configure: Apache (merge version)
 ```yaml
 ---
 - hosts: all
@@ -100,7 +100,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.apache
     
 ```
-##### Install: Apache from official repo (short version)
+##### Install: Apache from official repo (merge version)
 ```yaml
 ---
 - hosts: all
@@ -121,7 +121,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.apache
 
 ```
-##### Configure: apache.conf (short version)
+##### Configure: apache.conf (merge version)
 ```yaml
 ---
 - hosts: all
@@ -148,7 +148,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         name: darexsu.apache
 
 ```
-##### Configure: delete default vhost.conf and add new vhost.conf (short version)
+##### Configure: delete default vhost.conf and add new vhost.conf (merge version)
 ```yaml
 ---
 - hosts: all
@@ -165,7 +165,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
           state: "absent"
-          src: "apache__virtualhost.j2"
+          src: "apache_virtualhost.j2"
           backup: false
           vars:
             ip: "*"
@@ -179,14 +179,14 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "new.conf"
           state: "present"
-          src: "apache__virtualhost.j2"
+          src: "apache_virtualhost.j2"
           backup: false
           vars:
             ip: "*"
             port: "80"
             ServerName: "www.example2.com"
             ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/var/www/html"
+            DocumentRoot: "/var/www/html2"
             ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
             CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
               
@@ -195,7 +195,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       include_role: 
         name: darexsu.apache
 ```
-##### Configure enable/disable mods (short version)
+##### Configure enable/disable mods (merge version)
 ```yaml
 ---
 - hosts: all
@@ -260,7 +260,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
           state: "present"
-          src: "apache__virtualhost.j2"
+          src: "apache_virtualhost.j2"
           backup: false
           vars:
             ip: "*"
@@ -360,7 +360,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
           state: "absent"
-          src: "apache__virtualhost.j2"
+          src: "apache_virtualhost.j2"
           backup: false
           vars:
             ip: "*"
@@ -378,14 +378,14 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "new.conf"
           state: "present"
-          src: "apache__virtualhost.j2"
+          src: "apache_virtualhost.j2"
           backup: false
           vars:
             ip: "*"
             port: "80"
             ServerName: "www.example2.com"
             ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/var/www/html"
+            DocumentRoot: "/var/www/html2"
             ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
             CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
             SSLEngine: ""

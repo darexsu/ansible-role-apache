@@ -20,25 +20,25 @@
   meta: end_play
   when: not apache.enabled
 
-- name: include apache install
-  include_tasks: ./tasks/install/apache__install.yml
+- name: "-> 01_Apache_install.yml"
+  include_tasks: ./tasks/01_Apache_install.yml
   when: apache_install.enabled
-
-- name: include apache config
-  include_tasks: ./tasks/config/apache__conf.yml
-  when: apache_conf.enabled
-
-- name: include apache virtualhost config
-  include_tasks: ./tasks/config/apache__virtualhost_{{ ansible_os_family }}.yml
-  when: apache_virtualhost[item.key]['enabled']
-  with_dict: "{{ apache_virtualhost }}"
-
-- name: include apache modules
-  include_tasks: ./tasks/config/apache__modules_{{ ansible_os_family }}.yml
-  when: apache_modules.enabled
 
 - name: service facts
   ansible.builtin.service_facts:
+
+- name: "-> 02_Apache_conf.yml"
+  include_tasks: "./tasks/02_Apache_conf.yml"
+  when: apache_conf.enabled and ansible_facts.services is search(apache_const[ansible_os_family]['service_name'])
+
+- name: "-> 03_Apache_modules_{{ ansible_os_family }}.yml"
+  include_tasks: "./tasks/03_Apache_modules_{{ ansible_os_family }}.yml"
+  when: apache_modules.enabled and ansible_facts.services is search(apache_const[ansible_os_family]['service_name'])
+
+- name: "-> 04_Apache_virtualhost_{{ ansible_os_family }}.yml"
+  include_tasks: ./tasks/04_Apache_virtualhost_{{ ansible_os_family }}.yml
+  when: apache_virtualhost[item.key]['enabled'] and ansible_facts.services is search(apache_const[ansible_os_family]['service_name'])
+  with_dict: "{{ apache_virtualhost }}"
 
 - name: ensure apache is "{{ apache.service.state }}"
   ansible.builtin.service:

@@ -15,8 +15,8 @@ MaxKeepAliveRequests 100
 KeepAliveTimeout 5
 
 
-User {{ apache_conf['vars']['apache_user'] }}
-Group {{ apache_conf['vars']['apache_group'] }}
+User {{ apache_conf['data']['apache_user'] | default("apache") }}
+Group {{ apache_conf['data']['apache_group'] | default("apache") }}
 
 
 HostnameLookups Off

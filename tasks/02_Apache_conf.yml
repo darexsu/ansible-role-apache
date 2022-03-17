@@ -1,17 +1,17 @@
 ---
 - name: ensure web-server group exsist
   ansible.builtin.group:
-    name: "{{ apache_conf['vars']['apache_group'] }}"
+    name: "{{ apache_conf['data']['apache_group'] }}"
 
 - name: ensure web-server user exsist
   ansible.builtin.user:
-    name: "{{ apache_conf['vars']['apache_user'] }}"
-    group: "{{ apache_conf['vars']['apache_group'] }}"
+    name: "{{ apache_conf['data']['apache_user'] }}"
+    group: "{{ apache_conf['data']['apache_group'] }}"
 
 - name: copy conf template to remote node
   ansible.builtin.template:
     src: "{{ apache_conf.src }}"
-    dest: "{{ apache_const[ansible_os_family]['conf_path'] }}{{ apache_conf.file }}"
+    dest: "{{ apache_const[ansible_os_family]['conf_path'] }}{{ apache_conf['file'] }}"
     owner: root
     group: root
     mode: 0644

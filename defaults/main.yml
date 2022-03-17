@@ -31,7 +31,7 @@ apache_conf:
   file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
   src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
   backup: false
-  vars:
+  data:
     apache_user: "www-data"
     apache_group: "www-data"
 
@@ -47,9 +47,9 @@ apache_virtualhost:
     enabled: false
     file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
     state: "present"
-    src: "apache__virtualhost.j2"
+    src: "apache_virtualhost.j2"
     backup: false
-    vars:
+    data:
       ip: "*"
       port: "80"
       ServerName: "www.example.com"
@@ -67,7 +67,7 @@ apache_const:
     service_name: "apache2"
     conf_file: "apache2.conf"
     conf_path: "/etc/apache2/"
-    conf_src: "apache__conf_Debian.j2"
+    conf_src: "apache_conf_Debian.j2"
     virtualhost_path: "/etc/apache2/sites-available/"
     virtualhost_path_enabled: "/etc/apache2/sites-enabled/"
     virtualhost_default_file: "000-default.conf"
@@ -77,7 +77,7 @@ apache_const:
     service_name: "httpd"
     conf_file: "httpd.conf"
     conf_path: "/etc/httpd/conf/"
-    conf_src: "apache__conf_RedHat.j2"
+    conf_src: "apache_conf_RedHat.j2"
     virtualhost_path: "/etc/httpd/conf.d/"
     virtualhost_default_file: "welcome.conf"
     mods_available_path: "/etc/httpd/conf.modules.d/"

@@ -37,9 +37,9 @@
           enabled: true
           file: "new.conf"
           state: "present"
-          src: "apache__virtualhost.j2"
+          src: "apache_virtualhost.j2"
           backup: false
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example.com"
