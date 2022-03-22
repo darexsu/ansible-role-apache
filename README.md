@@ -4,7 +4,7 @@
   - Role:
       - [platforms](#platforms)
       - [install](#install)
-      - [Merge behaviour](#merge-behaviour)
+      - [merge behaviour](#merge-behaviour)
   - Playbooks (merge version):
       - [install and configure: Apache](#install-and-configure-apache-merge-version)
           - [install: Apache from official repo](#install-apache-from-official-repo-merge-version)
@@ -72,7 +72,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
-        vars:
+        data:
           apache_user: "www-data"
           apache_group: "www-data"
       # Apache -> config -> modules
@@ -85,7 +85,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         default_conf:
           enabled: true
           state: "present"
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example.com"
@@ -138,7 +138,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
         src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
         backup: false
-        vars:
+        data:
           apache_user: "www-data"
           apache_group: "www-data"
   
@@ -167,7 +167,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "absent"
           src: "apache_virtualhost.j2"
           backup: false
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example1.com"
@@ -181,7 +181,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "present"
           src: "apache_virtualhost.j2"
           backup: false
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example2.com"
@@ -246,7 +246,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
         src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
         backup: false
-        vars:
+        data:
           apache_user: "www-data"
           apache_group: "www-data"
       # Apache -> config -> modules
@@ -262,7 +262,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "present"
           src: "apache_virtualhost.j2"
           backup: false
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example.com"
@@ -330,7 +330,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
         src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
         backup: false
-        vars:
+        data:
           apache_user: "www-data"
           apache_group: "www-data"
   
@@ -362,7 +362,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "absent"
           src: "apache_virtualhost.j2"
           backup: false
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example1.com"
@@ -380,7 +380,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "present"
           src: "apache_virtualhost.j2"
           backup: false
-          vars:
+          data:
             ip: "*"
             port: "80"
             ServerName: "www.example2.com"
