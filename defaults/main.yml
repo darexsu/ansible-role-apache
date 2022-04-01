@@ -18,12 +18,6 @@ apache:
 # Apache -> install
 apache_install:
   enabled: false
-  packages:
-    Debian: [apache2]
-    RedHat: [httpd]
-  dependencies:
-    Debian: []
-    RedHat: []
 
 # Apache -> config -> apache.conf
 apache_conf:
@@ -64,6 +58,8 @@ apache_virtualhost:
 # Apache -> constants
 apache_const:
   Debian:
+    dependencies: []
+    packages: [apache2]
     service_name: "apache2"
     conf_file: "apache2.conf"
     conf_path: "/etc/apache2/"
@@ -74,6 +70,8 @@ apache_const:
     mods_enabled_path: "/etc/apache2/mods-enabled"
     mods_available_path: "/etc/apache2/mods-available"
   RedHat:
+    dependencies: []
+    packages: [httpd]
     service_name: "httpd"
     conf_file: "httpd.conf"
     conf_path: "/etc/httpd/conf/"
