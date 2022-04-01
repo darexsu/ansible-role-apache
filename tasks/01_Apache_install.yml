@@ -1,12 +1,12 @@
 ---
 - name: install apache dependencies
   ansible.builtin.package:
-    name: "{{ apache_install['dependencies'][ansible_os_family] }}"
+    name: "{{ apache_const[ansible_os_family]['dependencies'] }}"
     state: present
     update_cache: true
 
 - name: install apache packages
   ansible.builtin.package:
-    name: "{{ apache_install['packages'][ansible_os_family] }}"
+    name: "{{ apache_const[ansible_os_family]['packages'] }}"
     state: present
     update_cache: true

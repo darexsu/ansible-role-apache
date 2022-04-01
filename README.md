@@ -234,12 +234,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Apache -> install
       apache_install:
         enabled: true
-        packages:
-          Debian: [apache2]
-          RedHat: [httpd]
-        dependencies:
-          Debian: []
-          RedHat: []
       # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
@@ -297,12 +291,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       # Apache -> install
       apache_install:
         enabled: true
-        packages:
-          Debian: [apache2]
-          RedHat: [httpd]
-        dependencies:
-          Debian: []
-          RedHat: []
 
   tasks:
     - name: role darexsu.apache
