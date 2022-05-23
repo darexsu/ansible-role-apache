@@ -224,49 +224,48 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Apache
-      apache:
+    # Apache
+    apache:
+      enabled: true
+      service:
         enabled: true
-        service:
-          enabled: true
-          state: "started"
-      # Apache -> install
-      apache_install:
+        state: "started"
+    # Apache -> install
+    apache_install:
+      enabled: true
+    # Apache -> config -> apache.conf
+    apache_conf:
+      enabled: true
+      file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+      src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+      backup: false
+      data:
+        apache_user: "www-data"
+        apache_group: "www-data"
+    # Apache -> config -> modules
+    apache_modules:
+      enabled: true
+      mods_enabled: [rewrite]
+      mods_disabled: []
+    # Apache -> config -> {virtualhost}.conf
+    apache_virtualhost:
+      default_conf:
         enabled: true
-      # Apache -> config -> apache.conf
-      apache_conf:
-        enabled: true
-        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
-        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+        file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
+        state: "present"
+        src: "apache_virtualhost.j2"
         backup: false
         data:
-          apache_user: "www-data"
-          apache_group: "www-data"
-      # Apache -> config -> modules
-      apache_modules:
-        enabled: true
-        mods_enabled: [rewrite]
-        mods_disabled: []
-      # Apache -> config -> {virtualhost}.conf
-      apache_virtualhost:
-        default_conf:
-          enabled: true
-          file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
-          state: "present"
-          src: "apache_virtualhost.j2"
-          backup: false
-          data:
-            ip: "*"
-            port: "80"
-            ServerName: "www.example.com"
-            ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/var/www/html"
-            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
-            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
-            SSLEngine: ""
-            SSLCertificateFile: ""
-            SSLCertificateKeyFile: ""
+          ip: "*"
+          port: "80"
+          ServerName: "www.example.com"
+          ServerAdmin: "webmaster@localhost"
+          DocumentRoot: "/var/www/html"
+          ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+          CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
+          SSLEngine: ""
+          SSLCertificateFile: ""
+          SSLCertificateKeyFile: ""
   
   tasks:
     - name: role darexsu.apache
@@ -281,16 +280,15 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
   become: true
 
   vars:
-    merge:
-      # Apache
-      apache:
+    # Apache
+    apache:
+      enabled: true
+      service:
         enabled: true
-        service:
-          enabled: true
-          state: "started"
-      # Apache -> install
-      apache_install:
-        enabled: true
+        state: "started"
+    # Apache -> install
+    apache_install:
+      enabled: true
 
   tasks:
     - name: role darexsu.apache
@@ -304,23 +302,22 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 - hosts: all
   become: true
 
-  vars:
-    merge:
-      # Apache
-      apache:
+  vars:   
+    # Apache
+    apache:
+      enabled: true
+      service:
         enabled: true
-        service:
-          enabled: true
-          state: "started"
-      # Apache -> config -> apache.conf
-      apache_conf:
-        enabled: true
-        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
-        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
-        backup: false
-        data:
-          apache_user: "www-data"
-          apache_group: "www-data"
+        state: "started"
+    # Apache -> config -> apache.conf
+    apache_conf:
+      enabled: true
+      file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+      src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+      backup: false
+      data:
+        apache_user: "www-data"
+        apache_group: "www-data"
   
   tasks:
     - name: role darexsu.apache
@@ -334,51 +331,50 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 - hosts: all
   become: true
 
-  vars:
-    merge:
-      # Apache
-      apache:
+  vars:   
+    # Apache
+    apache:
+      enabled: true
+      service:
         enabled: true
-        service:
-          enabled: true
-          state: "started"
-      # Apache -> config -> {virtualhost}.conf
-      apache_virtualhost:
-        default_conf:
-          enabled: true
-          file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
-          state: "absent"
-          src: "apache_virtualhost.j2"
-          backup: false
-          data:
-            ip: "*"
-            port: "80"
-            ServerName: "www.example1.com"
-            ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/var/www/html"
-            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
-            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
-            SSLEngine: ""
-            SSLCertificateFile: ""
-            SSLCertificateKeyFile: ""
-      # Apache -> config -> new.conf
-        new_conf:
-          enabled: true
-          file: "new.conf"
-          state: "present"
-          src: "apache_virtualhost.j2"
-          backup: false
-          data:
-            ip: "*"
-            port: "80"
-            ServerName: "www.example2.com"
-            ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/var/www/html2"
-            ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
-            CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
-            SSLEngine: ""
-            SSLCertificateFile: ""
-            SSLCertificateKeyFile: ""
+        state: "started"
+    # Apache -> config -> {virtualhost}.conf
+    apache_virtualhost:
+      default_conf:
+        enabled: true
+        file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
+        state: "absent"
+        src: "apache_virtualhost.j2"
+        backup: false
+        data:
+          ip: "*"
+          port: "80"
+          ServerName: "www.example1.com"
+          ServerAdmin: "webmaster@localhost"
+          DocumentRoot: "/var/www/html"
+          ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+          CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
+          SSLEngine: ""
+          SSLCertificateFile: ""
+          SSLCertificateKeyFile: ""
+    # Apache -> config -> new.conf
+      new_conf:
+        enabled: true
+        file: "new.conf"
+        state: "present"
+        src: "apache_virtualhost.j2"
+        backup: false
+        data:
+          ip: "*"
+          port: "80"
+          ServerName: "www.example2.com"
+          ServerAdmin: "webmaster@localhost"
+          DocumentRoot: "/var/www/html2"
+          ErrorLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/error.log"
+          CustomLog: "/var/log/{{ apache_const[ansible_os_family]['service_name'] }}/access.log combined"
+          SSLEngine: ""
+          SSLCertificateFile: ""
+          SSLCertificateKeyFile: ""
               
   tasks:
     - name: role darexsu.apache
@@ -391,19 +387,18 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 - hosts: all
   become: true
 
-  vars:
-    merge:
-      # Apache
-      apache:
+  vars:   
+    # Apache
+    apache:
+      enabled: true
+      service:
         enabled: true
-        service:
-          enabled: true
-          state: "started"
-      # Apache -> config -> modules
-      apache_modules:
-        enabled: true
-        mods_enabled: [rewrite]
-        mods_disabled: []
+        state: "started"
+    # Apache -> config -> modules
+    apache_modules:
+      enabled: true
+      mods_enabled: [rewrite]
+      mods_disabled: []
               
   tasks:
     - name: role darexsu.apache
