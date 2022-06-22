@@ -1,9 +1,6 @@
 ---
 # Apache
 #  ├── install
-#  |    ├── packages
-#  |    ├── dependencies
-#  |    └── repositories
 #  └── config
 #       ├── apache.conf
 #       └── virtualhost.conf
@@ -36,7 +33,7 @@ apache_modules:
   mods_disabled: []
 
 # Apache -> config -> {virtualhost}.conf
-apache_virtualhost:
+apache_virtualhost: # loop
   default_conf:
     enabled: false
     file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
